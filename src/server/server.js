@@ -56,6 +56,10 @@ app.get("/api/login", passport.authenticate("google", { scope: ["profile", "emai
 app.get("/api/oauth2callback", passport.authenticate("google"), (req, res) => {
     res.redirect("/");
 });
+app.get("/api/logout", (req, res) => {
+    req.logout();
+    res.redirect("/");
+});
 
 app.use(express.static(path.resolve(__dirname, "..", "..", "dist")));
 

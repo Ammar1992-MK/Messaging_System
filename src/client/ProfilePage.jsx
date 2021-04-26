@@ -16,8 +16,14 @@ export const ProfilePage = ({systemApi}) => {
     }
     return <div className={"profile-container"}>
         <h1>Profile</h1>
-        <img src={""}/>
+        <div>
+            <a href={"/api/logout"} target={"_self"}>
+                {" "}
+                Log out
+            </a>
+        </div>
+        <img src={user.profilePicture}/>
         <div>username: {user.username} </div>
-        <div>email: </div>
+        <div>email: {user.email} </div>
     </div>;
 }
