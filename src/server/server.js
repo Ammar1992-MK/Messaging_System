@@ -71,9 +71,10 @@ app.get("/api/retrieveMessage" , (req, res) => {
     res.json(chatLog);
 })
 app.post("/api/sendMessage", (req, res) => {
-    const {message} = req.body;
+    const {message,username} = req.body;
     const newMessage = {
-        message : message
+        message : message,
+        sender : username,
     };
     chatLog.push(newMessage);
 })

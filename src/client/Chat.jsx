@@ -3,7 +3,7 @@ import {useLoading} from "./UseLoading";
 import {ErrorView} from "./ErrorView";
 import {LoadingView} from "./LoadingView";
 
-export const Chat = ({systemApi}) => {
+export const Chat = ({systemApi,username}) => {
     const[message, setMessage] = useState("");
     const { loading, error, data : chatLog } = useLoading(async () =>
         await systemApi.retrieveMessage()
@@ -18,7 +18,7 @@ export const Chat = ({systemApi}) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        systemApi.postMessage({message})
+        systemApi.postMessage({message ,username})
         console.log("submitted")
     }
 

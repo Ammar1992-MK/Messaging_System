@@ -28,10 +28,10 @@
              }
              return res.json();
          },
-         postMessage : async ({message}) => {
+         postMessage : async ({message,username}) => {
             await fetch("/api/sendMessage", {
                  method : "POST",
-                 body : JSON.stringify({message}),
+                 body : JSON.stringify({message,username}),
                  headers : {
                      "Content-Type" : "application/json"
                  }
