@@ -23,7 +23,12 @@ const users = [
     }
 
 ];
-const chatLog = [];
+const chatLog = [
+    {
+        message : "Test",
+        sender : "Ammar"
+    }
+];
 
 const app = express();
 app.use(
@@ -61,6 +66,17 @@ passport.deserializeUser((user, done) => done(null, user));
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.get("/api/retrieveMessage" , (req, res) => {
+    res.json(chatLog);
+})
+app.post("/api/sendMessage", (req, res) => {
+    const {message} = req.body;
+    const newMessage = {
+        message : message
+    };
+    chatLog.push(newMessage);
+})
 
 app.post("/api/createUser", (req, res) => {
 

@@ -37,7 +37,7 @@ const Application = () => {
                         <AdminPage/>
                     </Route>
                     <Route path={"/chat"}>
-                        <Chat/>
+                        <Chat systemApi={systemApi}/>
                     </Route>
                     <Route path={"/"}>
                         <h1>Messaging Application</h1>
