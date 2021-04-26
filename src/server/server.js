@@ -68,13 +68,13 @@ app.get("/api/profile", (req, res) => {
         return res.status(401).send();
     }
     const{username, email, profilePicture } = req.user;
-    users.push(req.user);
     res.json({username, email, profilePicture});
 })
 
 app.get("/api/login", passport.authenticate("google", { scope: ["profile", "email"] })
 );
 app.get("/api/oauth2callback", passport.authenticate("google"), (req, res) => {
+    users.push(req.user);
     res.redirect("/");
 });
 app.get("/api/logout", (req, res) => {
