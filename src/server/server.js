@@ -23,6 +23,7 @@ const users = [
     }
 
 ];
+const chatLog = [];
 
 const app = express();
 app.use(

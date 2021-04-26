@@ -7,6 +7,7 @@ import {ProfilePage} from "./ProfilePage";
 import {UsersPage} from "./UsersPage";
 import {API} from "./API";
 import {AdminPage} from "./AdminPage";
+import {Chat} from "./Chat";
 
 const Application = () => {
 
@@ -34,6 +35,9 @@ const Application = () => {
                     </Route>
                     <Route path={"/admin"}>
                         <AdminPage/>
+                    </Route>
+                    <Route path={"/chat"}>
+                        <Chat/>
                     </Route>
                     <Route path={"/"}>
                         <h1>Messaging Application</h1>
