@@ -2,7 +2,6 @@ import React from "react";
 import {useLoading} from "./UseLoading";
 import {ErrorView} from "./ErrorView";
 import {LoadingView} from "./LoadingView";
-import {Link} from "react-router-dom";
 
 export const UsersPage = ({systemApi}) => {
     const { loading, error, data : users } = useLoading( async() =>
@@ -23,7 +22,7 @@ export const UsersPage = ({systemApi}) => {
             {users.map((user , index) =>
             <ul>
                 <li key={index}>
-                    <div>{user.username}</div>
+                    <div>{user.username} {user.isAdmin && <strong>ADMIN</strong>}</div>
                     <div>{user.email}</div>
                 </li>
             </ul>

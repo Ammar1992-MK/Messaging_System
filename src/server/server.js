@@ -60,6 +60,18 @@ passport.deserializeUser((user, done) => done(null, user));
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.post("/api/createUser", (req, res) => {
+
+   const {name, email, description} = req.body;
+   const newUser = {
+       username : name,
+       email : email,
+       description : description
+   }
+   users.push(newUser);
+
+})
 app.get("/api/users", (req, res) => {
     res.json(users);
 })

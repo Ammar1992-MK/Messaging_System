@@ -5,41 +5,23 @@ import {Route, Switch} from "react-router";
 import {LoginPage} from "./LoginPage";
 import {ProfilePage} from "./ProfilePage";
 import {UsersPage} from "./UsersPage";
+import {API} from "./API";
+import {AdminPage} from "./AdminPage";
 
 const Application = () => {
-    const systemApi = {
-        getProfile: async () => {
-            const res = await fetch("/api/profile");
-            if (!res.ok) {
-                throw new Error(
-                    `Something went wrong loading ${res.url}: ${res.statusText}`
-                );
-            }
-            return res.json();
-        },
-        getUsers : async () => {
-            const res = await fetch("api/users");
-            if(!res.ok){
-                throw new Error(
-                    `Something went wrong loading ${res.url}: ${res.statusText}`
-                );
-            }
-            return res.json();
-        }
-    }
+
+    const systemApi = API();
 
     return(
         <BrowserRouter>
             <nav className={"nav-container"}>
-                <Link to={"/"}>Home</Link>
+                <div><Link to={"/"}>Home</Link></div>
+                <div><Link to={"/users"}>List users</Link></div>
             </nav>
             <main className={"main-container"}>
                 <Switch>
                     <Route exact path={"/users"}>
                         <UsersPage systemApi={systemApi}/>
-                    </Route>
-                    <Route path={"/login"}>
-                        <LoginPage/>
                     </Route>
                     <Route path={"/profile"}>
                         <ProfilePage systemApi={systemApi}/>
@@ -50,25 +32,17 @@ const Application = () => {
                     <Route path={"/add"}>
                         <h1>Add users</h1>
                     </Route>
+                    <Route path={"/admin"}>
+                        <AdminPage/>
+                    </Route>
                     <Route path={"/"}>
                         <h1>Messaging Application</h1>
                         <ul>
                             <li>
-                                <Link to={"/users"}>List users</Link>
-                            </li>
-                            <li>
                                 <Link to={"/profile"}>Profile</Link>
                             </li>
-                            <li>
-                                <Link to={"/inbox"}>Inbox</Link>
-                            </li>
-                            <li>
-                                <Link to={"/add"}>add users</Link>
-                            </li>
                         </ul>
-                        <Link to={"/login"}>
-                            <button className={"btn"}>Log in</button>
-                        </Link>
+                        <LoginPage systemApi={systemApi}/>
                     </Route>
                     <Route>
                         <h1>Not found</h1>
