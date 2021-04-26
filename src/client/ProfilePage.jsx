@@ -14,6 +14,7 @@ export const ProfilePage = ({systemApi}) => {
     if(loading || !user){
         return <LoadingView/>
     }
+
     return <div className={"profile-container"}>
         <h1>Profile</h1>
         <div>

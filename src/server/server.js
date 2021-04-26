@@ -6,6 +6,24 @@ const cookieParser = require("cookie-parser");
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 
+//global variables
+
+const users = [
+    {
+        id: 0,
+        username : "Ola Nordmann",
+        email : "ola@service.com",
+        isAdmin : false,
+    },
+    {
+        id: 1,
+        username : "sensur kristiania",
+        email : "sensur@kristiania.no",
+        isAdmin: true,
+    }
+
+];
+
 const app = express();
 app.use(
     session({
@@ -42,12 +60,15 @@ passport.deserializeUser((user, done) => done(null, user));
 
 app.use(passport.initialize());
 app.use(passport.session());
-
+app.get("/api/users", (req, res) => {
+    res.json(users);
+})
 app.get("/api/profile", (req, res) => {
     if(!req.user){
         return res.status(401).send();
     }
-    const{username, email, profilePicture} = req.user;
+    const{username, email, profilePicture } = req.user;
+    users.push(req.user);
     res.json({username, email, profilePicture});
 })
 

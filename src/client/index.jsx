@@ -4,13 +4,22 @@ import {BrowserRouter, Link} from "react-router-dom";
 import {Route, Switch} from "react-router";
 import {LoginPage} from "./LoginPage";
 import {ProfilePage} from "./ProfilePage";
+import {UsersPage} from "./UsersPage";
 
 const Application = () => {
     const systemApi = {
         getProfile: async () => {
-
             const res = await fetch("/api/profile");
             if (!res.ok) {
+                throw new Error(
+                    `Something went wrong loading ${res.url}: ${res.statusText}`
+                );
+            }
+            return res.json();
+        },
+        getUsers : async () => {
+            const res = await fetch("api/users");
+            if(!res.ok){
                 throw new Error(
                     `Something went wrong loading ${res.url}: ${res.statusText}`
                 );
@@ -27,7 +36,7 @@ const Application = () => {
             <main className={"main-container"}>
                 <Switch>
                     <Route exact path={"/users"}>
-                        <h1>users</h1>
+                        <UsersPage systemApi={systemApi}/>
                     </Route>
                     <Route path={"/login"}>
                         <LoginPage/>
