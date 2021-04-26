@@ -2,21 +2,22 @@ import ReactDOM from 'react-dom'
 import React from 'react'
 import {BrowserRouter, Link} from "react-router-dom";
 import {Route, Switch} from "react-router";
+import {LoginPage} from "./LoginPage";
 
 const Application = () => {
 
     return(
         <BrowserRouter>
-            <nav>
+            <nav className={"nav-container"}>
                 <Link to={"/"}>Home</Link>
             </nav>
-            <main>
+            <main className={"main-container"}>
                 <Switch>
                     <Route exact path={"/users"}>
                         <h1>users</h1>
                     </Route>
-                    <Route  path={"/login"}>
-                        <h1>log in page</h1>
+                    <Route path={"/login"}>
+                        <LoginPage/>
                     </Route>
                     <Route path={"/profile"}>
                         <h1>profile</h1>
@@ -43,6 +44,10 @@ const Application = () => {
                                 <Link to={"/add"}>add users</Link>
                             </li>
                         </ul>
+                        <Link to={"/login"}><button className={"btn"}>Log in</button></Link>
+                    </Route>
+                    <Route>
+                        <h1>Not found</h1>
                     </Route>
                 </Switch>
             </main>
