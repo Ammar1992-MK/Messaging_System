@@ -9,11 +9,13 @@ const Application = () => {
     const systemApi = {
         getProfile: async () => {
 
-            const response = await fetch("/api/profile");
-                if (response.status === 401) {
-                   return 401
-                }
-            return response.json();
+            const res = await fetch("/api/profile");
+            if (!res.ok) {
+                throw new Error(
+                    `Something went wrong loading ${res.url}: ${res.statusText}`
+                );
+            }
+            return res.json();
         }
     }
 

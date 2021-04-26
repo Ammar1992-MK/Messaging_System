@@ -54,7 +54,7 @@ app.get("/api/profile", (req, res) => {
 app.get("/api/login", passport.authenticate("google", { scope: ["profile", "email"] })
 );
 app.get("/api/oauth2callback", passport.authenticate("google"), (req, res) => {
-    res.redirect("/profile");
+    res.redirect("/");
 });
 
 app.use(express.static(path.resolve(__dirname, "..", "..", "dist")));
