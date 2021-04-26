@@ -41,12 +41,20 @@ passport.serializeUser((user, done) => done(null, user));
 passport.deserializeUser((user, done) => done(null, user));
 
 app.use(passport.initialize());
-app.use(passport,session());
+app.use(passport.session());
+
+app.get("/api/profile", (req, res) => {
+    if(!req.user){
+        return res.status(401).send();
+    }
+    const{username, email, profilePicture} = req.user;
+    res.json({username, email, profilePicture});
+})
 
 app.get("/api/login", passport.authenticate("google", { scope: ["profile", "email"] })
 );
 app.get("/api/oauth2callback", passport.authenticate("google"), (req, res) => {
-    res.redirect("/");
+    res.redirect("/profile");
 });
 
 app.use(express.static(path.resolve(__dirname, "..", "..", "dist")));

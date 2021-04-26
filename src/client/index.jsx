@@ -3,8 +3,19 @@ import React from 'react'
 import {BrowserRouter, Link} from "react-router-dom";
 import {Route, Switch} from "react-router";
 import {LoginPage} from "./LoginPage";
+import {ProfilePage} from "./ProfilePage";
 
 const Application = () => {
+    const systemApi = {
+        getProfile: async () => {
+
+            const response = await fetch("/api/profile");
+                if (response.status === 401) {
+                   return 401
+                }
+            return response.json();
+        }
+    }
 
     return(
         <BrowserRouter>
@@ -20,7 +31,7 @@ const Application = () => {
                         <LoginPage/>
                     </Route>
                     <Route path={"/profile"}>
-                        <h1>profile</h1>
+                        <ProfilePage systemApi={systemApi}/>
                     </Route>
                     <Route path={"/inbox"}>
                         <h1>inbox</h1>
@@ -44,7 +55,9 @@ const Application = () => {
                                 <Link to={"/add"}>add users</Link>
                             </li>
                         </ul>
-                        <Link to={"/login"}><button className={"btn"}>Log in</button></Link>
+                        <Link to={"/login"}>
+                            <button className={"btn"}>Log in</button>
+                        </Link>
                     </Route>
                     <Route>
                         <h1>Not found</h1>
