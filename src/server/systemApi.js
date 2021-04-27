@@ -19,7 +19,7 @@ const users = [
 ];
 const chatLog = [
     {
-        id: 0,
+        id: 1,
         message: "Test",
         sender: "Ammar",
     },
@@ -35,6 +35,7 @@ systemApi.post("/sendMessage", (req, res) => {
         sender: username,
     };
     chatLog.push(newMessage);
+    res.status(201).end();
 });
 
 systemApi.post("/createUser", (req, res) => {
@@ -46,6 +47,7 @@ systemApi.post("/createUser", (req, res) => {
         description: description,
     };
     users.push(newUser);
+    res.status(201).end();
 });
 systemApi.get("/users", (req, res) => {
     res.json(users);
