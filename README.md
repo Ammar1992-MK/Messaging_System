@@ -2,7 +2,7 @@
 To run the application you need to do the following
 
  * Run "npm install" in your commandline at the project
- * After the installation you can run "npm start" in the commandline and the server will start on port 3030.
+ * After the installation you can run "npm start" in the commandline and the server will start on port 3000.
 
 #### Admin User username and password : sensur - kristiania2021 
 
