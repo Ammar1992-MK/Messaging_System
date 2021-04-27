@@ -1,26 +1,36 @@
-import React,{useState} from 'react';
+import React,{useState,useEffect} from 'react';
 import {useLoading} from "./UseLoading";
 import {ErrorView} from "./ErrorView";
 import {LoadingView} from "./LoadingView";
 
-export const Chat = ({systemApi,username}) => {
+export const Chat = ({username}) => {
     const[message, setMessage] = useState("");
-    const { loading, error, data : chatLog } = useLoading(async () =>
-        await systemApi.retrieveMessage()
-    )
+    const[chatLog, setChatLog] = useState([]);
+    const[ws, setWs] = useState();
 
-    if(error){
-        return <ErrorView error={error}/>
-    }
-    if(loading || !chatLog){
-        return <LoadingView/>
-    }
+    useEffect(() => {
+        const ws = new WebSocket("ws://" + window.location.host);
+        ws.onopen = (event) => {
+            console.log("opened", event);
+        }
+
+        ws.onmessage = (event) => {
+            console.log("from server",  event)
+            setChatLog((chatLog) =>[...chatLog, event.data]);
+        }
+        ws.onclose = (event) => {
+            console.log("closed", event);
+        }
+        setWs(ws);
+    },[])
+
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        systemApi.postMessage({message ,username})
-        console.log("submitted")
+        ws.send(message);
+        setMessage("");
     }
+
 
     return (
         <div className={"chat-container"}>
@@ -29,8 +39,8 @@ export const Chat = ({systemApi,username}) => {
             </header>
             <main className={"chat-main"}>
                 <div className={"chat-log"}>
-                    {chatLog.map((chat, index) => (
-                        <div key={index}>{chat.sender} : {chat.message}</div>
+                    {chatLog.map((message, index) => (
+                        <div key={index}>{`from ${username} : `}{message}</div>
                     ))}
                 </div>
             </main>

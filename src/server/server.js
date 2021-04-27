@@ -5,6 +5,7 @@ const session = require ("express-session");
 const cookieParser = require("cookie-parser");
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
+const ws = require("ws");
 
 //global variables
 
@@ -115,6 +116,7 @@ app.get("/api/logout", (req, res) => {
 app.use(express.static(path.resolve(__dirname, "..", "..", "dist")));
 
 
+
 app.use((req, res, next) => {
     if (req.method !== "GET" || req.path.startsWith("/api")) {
         return next();
@@ -122,6 +124,24 @@ app.use((req, res, next) => {
     res.sendFile(path.resolve(__dirname, "..", "..", "dist", "index.html"));
 });
 
-app.listen(3000, () => {
-    console.log("Started on http://localhost:3000");
+const wsServer = new ws.Server({noServer : true});
+const sockets = [];
+wsServer.on("connection",socket => {
+    sockets.push(socket);
+    socket.on("message", message => {
+        for(const socket of sockets){
+            socket.send(message)
+        }
+
+    });
+})
+
+
+const server = app.listen(3000, () => {
+    console.log(`Started on http://localhost:${server.address().port}`);
+    server.on("upgrade", (req,res,head) => {
+        wsServer.handleUpgrade(req, res, head, socket => {
+            wsServer.emit("connection", socket, req);
+        });
+    });
 });
