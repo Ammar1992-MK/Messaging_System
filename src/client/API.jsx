@@ -1,44 +1,19 @@
+import {fetchJSON, postJSON} from "./https";
 
- export function API(){
-     const systemApi = {
-         getProfile: async () => {
-             const res = await fetch("/api/profile");
-             if (!res.ok) {
-                 throw new Error(
-                     `Something went wrong loading ${res.url}: ${res.statusText}`
-                 );
-             }
-             return res.json();
-         },
-         getUsers: async () => {
-             const res = await fetch("/api/users");
-             if (!res.ok) {
-                 throw new Error(
-                     `Something went wrong loading ${res.url}: ${res.statusText}`
-                 );
-             }
-             return res.json();
-         },
-         retrieveMessage : async () => {
-             const res = await fetch ("/api/retrieveMessage");
-             if(!res.ok){
-                 throw new Error(
-                     `Something went wrong loading ${res.url}: ${res.statusText}`
-                 );
-             }
-             return res.json();
-         },
-         postMessage : async ({message,username}) => {
-            await fetch("/api/sendMessage", {
-                 method : "POST",
-                 body : JSON.stringify({message,username}),
-                 headers : {
-                     "Content-Type" : "application/json"
-                 }
-             })
-         }
-     }
+export function API() {
+  const systemApi = {
+    getProfile: async () => await fetchJSON("api/profile"),
+    addUser : async ({name, email, description}) => postJSON("/api/createUser", {
+      method : "POST",
+      json : {name, email, description}
+    }),
+    getUsers: async () => await fetchJSON("/api/users"),
+    retrieveMessage: async () => await fetchJSON("/api/retrieveMessage"),
+    postMessage: async ({message, sender}) => postJSON("/api/sendMessage", {
+      method : "POST",
+      json : {message, sender}
+    }),
+  };
 
-     return systemApi;
-
- }
+  return systemApi;
+}

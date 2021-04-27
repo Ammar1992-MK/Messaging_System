@@ -1,32 +1,31 @@
-body{
-    margin: 0;
+body {
+  margin: 0;
 }
 /* CHAT */
 
-.chat-container{
-
-    display: grid;
-    grid-template-rows: auto 1fr auto;
-    height : 50vh;
-    width: 50vh;
+.chat-container {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  height: 50vh;
+  width: 50vh;
 }
-.chat-header{
-background-color: #45a1d6;
-}
-
-.chat-main{
-    background-color: #a345d6;
-    overflow-y: auto;
+.chat-header {
+  background-color: #45a1d6;
 }
 
-.chat-footer{
-    background-color: #d69c45;
+.chat-main {
+  background-color: #a345d6;
+  overflow-y: auto;
 }
 
-.chat-form{
-    display: flex;
-    align-items: stretch;
+.chat-footer {
+  background-color: #d69c45;
 }
-.chat-form input{
-    flex : 1;
+
+.chat-form {
+  display: flex;
+  align-items: stretch;
+}
+.chat-form input {
+  flex: 1;
 }

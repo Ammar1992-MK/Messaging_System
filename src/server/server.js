@@ -1,7 +1,7 @@
 const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
-const session = require ("express-session");
+const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
@@ -10,56 +10,56 @@ const ws = require("ws");
 //global variables
 
 const users = [
-    {
-        id: 0,
-        username : "Ola Nordmann",
-        email : "ola@service.com",
-        isAdmin : false,
-    },
-    {
-        id: 1,
-        username : "sensur kristiania",
-        email : "sensur@kristiania.no",
-        isAdmin: true,
-    }
-
+  {
+    id: 0,
+    username: "Ola Nordmann",
+    email: "ola@service.com",
+    isAdmin: false,
+  },
+  {
+    id: 1,
+    username: "sensur kristiania",
+    email: "sensur@kristiania.no",
+    isAdmin: true,
+  },
 ];
 const chatLog = [
-    {
-        message : "Test",
-        sender : "Ammar"
-    }
+  {
+    id: 0,
+    message: "Test",
+    sender: "Ammar",
+  },
 ];
 
 const app = express();
 app.use(
-    session({
-        secret: "32bjS959js",
-        resave: false,
-        saveUninitialized: false,
-    })
+  session({
+    secret: "32bjS959js",
+    resave: false,
+    saveUninitialized: false,
+  })
 );
 
 app.use(bodyParser.json());
 app.use(cookieParser());
 
 passport.use(
-    new GoogleStrategy(
-        {
-            clientID:
-                "889522382035-uhsdcdtl5s4lrhi2j2g24q8q3r7dpog8.apps.googleusercontent.com",
-            callbackURL: "/api/oauth2callback",
-            clientSecret: "0_q3RKaftIvtKUpV-Pnuchh3",
-        },
-        (accessToken, refreshToken, profile, done) => {
-            console.log(profile);
-            done(null, {
-                username: profile.displayName,
-                email: profile.emails[0].value,
-                profilePicture: profile.photos[0].value,
-            });
-        }
-    )
+  new GoogleStrategy(
+    {
+      clientID:
+        "889522382035-uhsdcdtl5s4lrhi2j2g24q8q3r7dpog8.apps.googleusercontent.com",
+      callbackURL: "/api/oauth2callback",
+      clientSecret: "0_q3RKaftIvtKUpV-Pnuchh3",
+    },
+    (accessToken, refreshToken, profile, done) => {
+      console.log(profile);
+      done(null, {
+        username: profile.displayName,
+        email: profile.emails[0].value,
+        profilePicture: profile.photos[0].value,
+      });
+    }
+  )
 );
 
 passport.serializeUser((user, done) => done(null, user));
@@ -68,80 +68,79 @@ passport.deserializeUser((user, done) => done(null, user));
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.get("/api/retrieveMessage" , (req, res) => {
-    res.json(chatLog);
-})
+app.get("/api/retrieveMessage", (req, res) => {
+  res.json(chatLog);
+});
 app.post("/api/sendMessage", (req, res) => {
-    const {message,username} = req.body;
-    const newMessage = {
-        message : message,
-        sender : username,
-    };
-    chatLog.push(newMessage);
-})
+  const { message, username } = req.body;
+  const newMessage = {
+    id : chatLog.length +1,
+    message: message,
+    sender: username,
+  };
+  chatLog.push(newMessage);
+});
 
 app.post("/api/createUser", (req, res) => {
-
-   const {name, email, description} = req.body;
-   const newUser = {
-       username : name,
-       email : email,
-       description : description
-   }
-   users.push(newUser);
-
-})
+  const { name, email, description } = req.body;
+  const newUser = {
+    id : users.length +1,
+    username: name,
+    email: email,
+    description: description,
+  };
+  users.push(newUser);
+});
 app.get("/api/users", (req, res) => {
-    res.json(users);
-})
+  res.json(users);
+});
 app.get("/api/profile", (req, res) => {
-    if(!req.user){
-        return res.status(401).send();
-    }
-    const{username, email, profilePicture } = req.user;
-    res.json({username, email, profilePicture});
-})
+  if (!req.user) {
+    return res.status(401).send();
+  }
+  console.log(req.user);
+  const { username, email, profilePicture } = req.user;
+  res.json({ username, email, profilePicture });
+});
 
-app.get("/api/login", passport.authenticate("google", { scope: ["profile", "email"] })
+app.get(
+  "/api/login",
+  passport.authenticate("google", { scope: ["profile", "email"] })
 );
 app.get("/api/oauth2callback", passport.authenticate("google"), (req, res) => {
-    users.push(req.user);
-    res.redirect("/");
+  users.push(req.user);
+  res.redirect("/");
 });
 app.get("/api/logout", (req, res) => {
-    req.logout();
-    res.redirect("/");
+  req.logout();
+  res.redirect("/");
 });
 
 app.use(express.static(path.resolve(__dirname, "..", "..", "dist")));
 
-
-
 app.use((req, res, next) => {
-    if (req.method !== "GET" || req.path.startsWith("/api")) {
-        return next();
-    }
-    res.sendFile(path.resolve(__dirname, "..", "..", "dist", "index.html"));
+  if (req.method !== "GET" || req.path.startsWith("/api")) {
+    return next();
+  }
+  res.sendFile(path.resolve(__dirname, "..", "..", "dist", "index.html"));
 });
 
-const wsServer = new ws.Server({noServer : true});
+const wsServer = new ws.Server({ noServer: true });
 const sockets = [];
-wsServer.on("connection",socket => {
-    sockets.push(socket);
-    socket.on("message", message => {
-        for(const socket of sockets){
-            socket.send(message)
-        }
-
-    });
-})
-
+wsServer.on("connection", (socket) => {
+  sockets.push(socket);
+  socket.on("message", (message) => {
+    for (const socket of sockets) {
+      socket.send(message);
+    }
+  });
+});
 
 const server = app.listen(3000, () => {
-    console.log(`Started on http://localhost:${server.address().port}`);
-    server.on("upgrade", (req,res,head) => {
-        wsServer.handleUpgrade(req, res, head, socket => {
-            wsServer.emit("connection", socket, req);
-        });
+  console.log(`Started on http://localhost:${server.address().port}`);
+  server.on("upgrade", (req, res, head) => {
+    wsServer.handleUpgrade(req, res, head, (socket) => {
+      wsServer.emit("connection", socket, req);
     });
+  });
 });
