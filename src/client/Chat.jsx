@@ -37,6 +37,7 @@ export const Chat = ({username}) => {
             <header className={"chat-header"}>
                 <h1>Chat</h1>
             </header>
+
             <main className={"chat-main"}>
                 <div className={"chat-log"}>
                     {chatLog.map((message, index) => (
