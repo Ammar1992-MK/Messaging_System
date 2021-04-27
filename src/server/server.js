@@ -6,32 +6,10 @@ const cookieParser = require("cookie-parser");
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const ws = require("ws");
-
-//global variables
-
-const users = [
-  {
-    id: 0,
-    username: "Ola Nordmann",
-    email: "ola@service.com",
-    isAdmin: false,
-  },
-  {
-    id: 1,
-    username: "sensur kristiania",
-    email: "sensur@kristiania.no",
-    isAdmin: true,
-  },
-];
-const chatLog = [
-  {
-    id: 0,
-    message: "Test",
-    sender: "Ammar",
-  },
-];
+const systemApi = require("./systemApi")
 
 const app = express();
+
 app.use(
   session({
     secret: "32bjS959js",
@@ -67,55 +45,7 @@ passport.deserializeUser((user, done) => done(null, user));
 
 app.use(passport.initialize());
 app.use(passport.session());
-
-app.get("/api/retrieveMessage", (req, res) => {
-  res.json(chatLog);
-});
-app.post("/api/sendMessage", (req, res) => {
-  const { message, username } = req.body;
-  const newMessage = {
-    id : chatLog.length +1,
-    message: message,
-    sender: username,
-  };
-  chatLog.push(newMessage);
-});
-
-app.post("/api/createUser", (req, res) => {
-  const { name, email, description } = req.body;
-  const newUser = {
-    id : users.length +1,
-    username: name,
-    email: email,
-    description: description,
-  };
-  users.push(newUser);
-});
-app.get("/api/users", (req, res) => {
-  res.json(users);
-});
-app.get("/api/profile", (req, res) => {
-  if (!req.user) {
-    return res.status(401).send();
-  }
-  console.log(req.user);
-  const { username, email, profilePicture } = req.user;
-  res.json({ username, email, profilePicture });
-});
-
-app.get(
-  "/api/login",
-  passport.authenticate("google", { scope: ["profile", "email"] })
-);
-app.get("/api/oauth2callback", passport.authenticate("google"), (req, res) => {
-  users.push(req.user);
-  res.redirect("/");
-});
-app.get("/api/logout", (req, res) => {
-  req.logout();
-  res.redirect("/");
-});
-
+app.use("/api/",systemApi);
 app.use(express.static(path.resolve(__dirname, "..", "..", "dist")));
 
 app.use((req, res, next) => {
