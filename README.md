@@ -4,7 +4,7 @@ To run the application you need to do the following
  * Run "npm install" in your commandline at the project
  * After the installation you can run "npm start" in the commandline and the server will start on port 3000.
 
-#### Admin User username and password : sensur - kristiania2021 
+#### Admin User username and password : examiner - kristiania2021 
 
 when you load the page you will get to options, you can either log an as an admin.Or you can as well log in with google using your Google account.
 
