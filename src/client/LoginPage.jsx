@@ -17,35 +17,39 @@ export const LoginPage = ({ systemApi }) => {
   };
 
   return (
-    <div>
-      <h3>Log in as admin user</h3>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>
-            username
-            <input
-              type={"text"}
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
-          </label>
-        </div>
-        <div>
-          <label>
-            password
-            <input
-              type={"password"}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </label>
-        </div>
-        <button type={"submit"}>Log in</button>
-      </form>
-      <h3>Not an admin!, log in with Google</h3>
-      <a href={"/api/login"} target={"_self"}>
-        Log in with google
-      </a>
+    <div className={"login-page-main-container"}>
+      <h1 className={"title"}>Message Application</h1>
+      <div className={"login-page"}>
+        <h3>Log in as admin user</h3>
+        <form className={"login-page-form"} onSubmit={handleSubmit}>
+          <div>
+            <label>
+              username
+              <input
+                  type={"text"}
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+              />
+            </label>
+          </div>
+          <div>
+            <label>
+              password
+              <input
+                  type={"password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+              />
+            </label>
+          </div>
+          <button type={"submit"}>Log in</button>
+        </form>
+        <h3>Not an admin!, log in with Google</h3>
+        <a className={"google-login-link"} href={"/api/login"} target={"_self"}>
+          Log in with google
+        </a>
+      </div>
+
     </div>
   );
 };

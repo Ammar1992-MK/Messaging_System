@@ -10,7 +10,7 @@ export function ChatView({sendMessage, chatLog}) {
         setMessage("");
     };
 
-    return <div className={"chat-container"}>
+    return <div className={"chat-main-container"}>
         <header className={"chat-header"}>
             <h1>Chat</h1>
         </header>

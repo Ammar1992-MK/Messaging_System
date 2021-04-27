@@ -24,19 +24,19 @@ export const Message = ({ systemApi }) => {
   }
 
   return (
-    <div className={"chat-container"}>
-      <header className={"chat-header"}>
+    <div className={"message-container"}>
+      <header className={"message-header"}>
         <h1>Inbox</h1>
       </header>
-      <main className={"chat-main"}>
+      <main className={"message-main"}>
         <div className={"chat-log"}>
           {messageLog.map((message) => (
             <p key={message.id}>{message.message}</p>
           ))}
         </div>
       </main>
-      <footer className={"chat-footer"}>
-        <form className={"chat-form"} onSubmit={handleSubmit}>
+      <footer className={"message-footer"}>
+        <form className={"message-form"} onSubmit={handleSubmit}>
           <input
             type={"text"}
             autoFocus={true}

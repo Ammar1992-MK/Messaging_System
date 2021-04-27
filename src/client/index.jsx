@@ -7,13 +7,12 @@ import { ProfilePage } from "./ProfilePage";
 import { UsersPage } from "./UsersPage";
 import { API } from "./API";
 import { AdminPage } from "./AdminPage";
-import { Chat } from "./Chat";
 import { Message } from "./Message";
+import {Chat} from "./Chat";
 
 const Application = () => {
   const systemApi = API();
 
-  //TODO add id's to users
 
   return (
     <BrowserRouter>
@@ -24,6 +23,9 @@ const Application = () => {
         <div>
           <Link to={"/users"}>List users</Link>
         </div>
+        <div>
+          <Link to={"/profile"}>Profile</Link>
+        </div>
       </nav>
       <main className={"main-container"}>
         <Switch>
@@ -33,25 +35,16 @@ const Application = () => {
           <Route path={"/profile"}>
             <ProfilePage systemApi={systemApi} />
           </Route>
-          <Route path={"/inbox"}>
-            <h1>inbox</h1>
-          </Route>
-          <Route path={"/add"}>
-            <h1>Add users</h1>
-          </Route>
           <Route path={"/admin"}>
             <AdminPage systemApi={systemApi}/>
           </Route>
           <Route path={"/message"}>
             <Message systemApi={systemApi} />
           </Route>
+          <Route path={"/chat"}>
+            <Chat/>
+          </Route>
           <Route path={"/"}>
-            <h1>Messaging Application</h1>
-            <ul>
-              <li>
-                <Link to={"/profile"}>Profile</Link>
-              </li>
-            </ul>
             <LoginPage systemApi={systemApi} />
           </Route>
           <Route>
